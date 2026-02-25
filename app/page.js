@@ -245,9 +245,9 @@ export default function Home() {
       
   return (
     <main className="min-h-screen bg-gray-50 pt-19">
-      <div className="relative w-full min-h-90vh md:min-h-115 bg-black">
+      <div className="relative w-full min-h-105 md:min-h-115 bg-black">
         <div className="absolute w-full bg-[url(/hero-1.jpg)] inset-0 bg-cover bg-no-repeat bg-center opacity-55 blur-[1.5px]"></div>
-        <div className="pt-10 pb-5 md:pb-0 md:pt-20 px-8 md:px-12 lg:px-60 z-10 relative">
+        <div className=" pb-5 md:pb-0 pt-20 px-8 md:px-12 lg:px-60 z-10 relative">
           <h2 className="font-bold text-white text-4xl md:text-7xl">Fresh, Delicious Meals Delivered Fast</h2>
           <p className="mt-2 md:mt-4 text-white/80 md:text-lg">Experience the true taste of home. From smoky Jollof to savory Egusi, we bring Nigeria's finest dishes straight to your doorstep.</p>
           <div className="flex gap-3 mt-5">
@@ -260,7 +260,7 @@ export default function Home() {
         <div className="mt-10 p-5 md:p-8">
           <div className=" ">
             <div className="flex gap-5 justify-between items-center">
-              <p className="font-bold text-xl md:text-3xl mb-2">Our Popular Dishes</p>
+              <p className="font-bold text-xl md:text-3xl mb-2 text-black">Our Popular Dishes</p>
               <Link href="/menu/all"><p className="font-bold text-xs md:text-base text-orange-600 cursor-pointer">View Full Menu<span className="ml-1"> &gt;</span></p></Link>
             </div>
             <div>
