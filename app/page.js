@@ -247,7 +247,7 @@ export default function Home() {
     <main className="min-h-screen bg-gray-50 pt-19">
       <div className="relative w-full min-h-105 md:min-h-115 bg-black">
         <div className="absolute w-full bg-[url(/hero-1.jpg)] inset-0 bg-cover bg-no-repeat bg-center opacity-55 blur-[1.5px]"></div>
-        <div className=" pb-5 md:pb-0 pt-20 px-8 md:px-12 lg:px-60 z-10 relative">
+        <div className=" pb-5 md:pb-0 pt-23 md:pt-20 px-8 md:px-12 lg:px-60 z-10 relative">
           <h2 className="font-bold text-white text-4xl md:text-7xl">Fresh, Delicious Meals Delivered Fast</h2>
           <p className="mt-2 md:mt-4 text-white/80 md:text-lg">Experience the true taste of home. From smoky Jollof to savory Egusi, we bring Nigeria's finest dishes straight to your doorstep.</p>
           <div className="flex gap-3 mt-5">
@@ -568,7 +568,7 @@ export default function Home() {
         </div>
 
         {/* SPECIAL DEALS */}
-        <div className="my-15 px-4 md:px-8">
+        <div className="mt-15 pb-20 px-4 md:px-8">
           <div className="text-center">
             <p className="text-orange-600 bg-orange-100 px-4 font-bold py-2 text-sm rounded-3xl w-fit mx-auto">LIMITED TIME OFFERS</p>
             <p className="font-bold text-4xl mt-3">Today's Special Deals</p>
@@ -603,13 +603,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="text-center mx-5 md:mx-40 my-10 md:my-30 p-5 md:p-15 rounded-4xl bg-green-950">
+          <div className="text-center mx-5 md:mx-40 mt-10 md:mt-30 p-5 md:p-15 rounded-4xl bg-green-950">
           <h3 className="font-bold text-2xl md:text-4xl text-white lg:text-5xl">Hungry? Let's get your meal ready in minutes</h3>
           <p className="text-gray-400 text-xl mt-7">Join thousands of happy customers who enjoy the best Nigerian cuisine everyday.</p>
           <Link href="/menu/all"><button className="text-white text-lg font-bold bg-orange-500 h-12 w-35 mt-5 md:h-15 md:w-40 md:mt-8 rounded-xl cursor-pointer">Order Now</button></Link>
         </div>
+        </div>
+
+        
     </main>
   )
 };
