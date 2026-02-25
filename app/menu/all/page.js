@@ -12,7 +12,7 @@ const categories = ["All", "RICE", "SOUPS", "SWALLOW", "GRILLS", "SNACKS", "DRIN
             category: "RICE",
             price: 4500,
             description: "Authentic smoky party Jollof rice served with fried plantain and your choice of protein.",
-            image: "/food1.jfif",
+            image: "/hero-1.jpg",
         },
         {
             id: 2,
@@ -20,7 +20,7 @@ const categories = ["All", "RICE", "SOUPS", "SWALLOW", "GRILLS", "SNACKS", "DRIN
             category: "RICE",
             price: 5500,
             description: "White rice, and perfectly cooked highly protenous shrimp stew.",
-            image: "/shrimp&rice.webp",
+            image: "/Shrimp&rice.webp",
         },
         {
             id: 3,
