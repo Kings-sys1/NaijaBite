@@ -124,7 +124,7 @@ export function Navbar() {
                         <div className="flex flex-col h-full justify-center items-center">
                             <span className="bg-orange-100/50 p-5 text-orange-300 rounded-full text-3xl"><BsCartX /></span>
                             <p className="text-gray-500 mt-4">Your cart is empty</p>
-                            <p className="font-semibold mt-3 text-orange-500 text-sm">Start odering some delicious food!</p>
+                            <Link href="/menu/all"><p className="font-semibold mt-3 text-orange-500 text-sm">Start odering some delicious food!</p></Link>
                         </div>
                         
                         

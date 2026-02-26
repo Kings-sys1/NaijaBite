@@ -515,7 +515,7 @@ export default function Home() {
                   <span><FaStar /></span>
                   <span><FaStar /></span>
                 </div>
-                <p className="text-gray-500">"Best Jollof rice I've had in Abuja! The smoky flavor reminds me of my mother's cooking. NaijaBite never disappoints!"</p>
+                <p className="text-gray-500 italic">"Best Jollof rice I've had in Abuja! The smoky flavor reminds me of my mother's cooking. NaijaBite never disappoints!"</p>
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -539,7 +539,7 @@ export default function Home() {
                   <span><FaStar /></span>
                   <span><FaStar /></span>
                 </div>
-                <p className="text-gray-500">"Their delivery is incredibly fast and the food always arrives hot. Perfect for busy workdays when I need authentic Nigerian meals."</p>
+                <p className="text-gray-500 italic">"Their delivery is incredibly fast and the food always arrives hot. Perfect for busy workdays when I need authentic Nigerian meals."</p>
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -562,7 +562,7 @@ export default function Home() {
                   <span><FaStar /></span>
                   <span><FaStar /></span>
                 </div>
-                <p className="text-gray-500">"We ordered catering for our company event and everyone was blown away! Professional service and delicious traditional dishes."</p>
+                <p className="text-gray-500 italic">"We ordered catering for our company event and everyone was blown away! Professional service and delicious traditional dishes."</p>
             </div>
           </div>
         </div>
@@ -596,7 +596,7 @@ export default function Home() {
                 <p className="text-white font-bold text-lg">First Order</p>
               </div>
               <p className="font-bold text-white text-4xl mt-3">25% OFF</p>
-              <p className="mt-3 text-white/90">New to NaijaBite? Get 25% off your first order. Use code: NAIJA25</p>
+              <p className="mt-3 text-white/90">New to NaijaBite? Get 25% off your first order. On Checkout Use code: NAIJA25</p>
               <div className="flex flex-col mt-5">
                 <button className="bg-white/25 text-white text-lg border border-white/40 rounded-xl h-13 w-30 font-bold mt-5">NAIJA25</button>
                 <button className="bg-white text-emerald-700 rounded-xl h-13 w-35 font-bold mt-5 cursor-pointer">Claim Offer</button>
