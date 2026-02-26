@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 import { IoCart } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -9,13 +9,17 @@ import { MdClose } from "react-icons/md";
 import { useCart } from "./context/cardcontext";
 import Image from "next/image";
 import { BsCartX } from "react-icons/bs";
+import { useSession } from "next-auth/react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 
 export function Navbar() {
 
     const [dropDown, setDropDown] = useState(false);
     const [cart, setCart] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [open, setOpen] = useState(false);
 
-    const { cartItems, removeFromCart } = useCart();
+    const { cartItems, removeFromCart, clearCart } = useCart();
 
     const pathname = usePathname();
     const toggleMenu = () => setDropDown(prev => !prev);
@@ -26,6 +30,27 @@ export function Navbar() {
 
     const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    const handleClose = ()=> {
+        setOpen(false);
+        setAlertMessage("");
+    };
+
+    const { data: session } = useSession();
+
+    const handleCheckout = () => {
+  if (!session) {
+    setAlertMessage("Please sign in to checkout");
+    setOpen(true);
+    closeCart();
+    return redirect("/auth/account");
+  }
+
+  setAlertMessage("Checkout successful 🎉");
+  setOpen(true);
+  clearCart();
+  closeCart();
+};
 
     /* ---------- ACTIVE LINK DETECTOR (IMPORTANT) ---------- */
     const isActive = (path) => pathname.startsWith(path);
@@ -124,7 +149,7 @@ export function Navbar() {
                         <div className="flex flex-col h-full justify-center items-center">
                             <span className="bg-orange-100/50 p-5 text-orange-300 rounded-full text-3xl"><BsCartX /></span>
                             <p className="text-gray-500 mt-4">Your cart is empty</p>
-                            <Link href="/menu/all"><p className="font-semibold mt-3 text-orange-500 text-sm">Start odering some delicious food!</p></Link>
+                            <Link href="/menu/all"><p onClick={closeCart} className="font-semibold mt-3 text-orange-500 text-sm">Start odering some delicious food!</p></Link>
                         </div>
                         
                         
@@ -174,13 +199,21 @@ export function Navbar() {
                             <p className="font-bold text-xl text-green-900">₦{totalPrice.toLocaleString()}</p>
                         </div>
                         <div>
-                            <button type="submit" className="bg-orange-500 text-white font-bold rounded-xl h-15 w-full mt-3 text-lg shadow-lg shadow-orange-200">Checkout</button>
+                            <button onClick={handleCheckout} type="submit" className="bg-orange-500 text-white font-bold rounded-xl h-15 w-full mt-3 text-lg shadow-lg shadow-orange-200">Checkout</button>
                         </div>
                         <p className="text-center text-xs text-gray-400 mt-4">Taxes and delivery fees calculated at checkout</p>
                     </div>)}
                 </div>
             </div>
-
+            <Dialog open={open} onClose={handleClose} >
+                <DialogTitle>Staus</DialogTitle>
+                <DialogContent>
+                    <Typography>{alertMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} variant="contained" color="primary">Close</Button>
+                </DialogActions>
+            </Dialog>
         </main>
     );
 }
