@@ -9,45 +9,72 @@ import { BsBox2 } from "react-icons/bs";
 import { MdOutlineForwardToInbox } from "react-icons/md";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebase.config";
-import { auth } from "@/auth";
 import { CircularProgress } from "@mui/material";
 
 export default function Account() {
     const { data: session, status } = useSession();
+
+    // =========================
+    // ALL HOOKS MUST BE HERE
+    // =========================
+
     const [Support, setSupport] = useState(false);
-    const contactSupport = ()=> setSupport(true);
     const [order, setOrder] = useState(false);
-    const checkOrder = ()=> setOrder(true);
     const [inbox, setInbox] = useState(false);
-    const checkInbox = ()=> setInbox(true);
     const [orders, setOrders] = useState([]);
-    
 
-useEffect(() => {
-    const fetchOrders = async () => {
-        if (!session?.user?.email) return;
+    const [mode, setMode] = useState("Login");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-        try {
-            const q = query(
-                collection(db, "orders"),
-                where("userId", "==", session.user.email)
-            );
+    const [name, setName] = useState("");
+    const [signupEmail, setSignupEmail] = useState("");
+    const [signupPassword, setSignupPassword] = useState("");
+    const [signupError, setSignupError] = useState("");
+    const [signupLoading, setSignupLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
 
-            const querySnapshot = await getDocs(q);
+    // =========================
+    // HANDLER FUNCTIONS
+    // =========================
 
-            const userOrders = [];
-            querySnapshot.forEach((doc) => {
-                userOrders.push({ id: doc.id, ...doc.data() });
-            });
+    const contactSupport = () => setSupport(true);
+    const checkOrder = () => setOrder(true);
+    const checkInbox = () => setInbox(true);
 
-            setOrders(userOrders);
-        } catch (error) {
-            console.error("Error fetching orders:", error);
+    // =========================
+    // EFFECTS
+    // =========================
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            if (!session?.user?.email) return;
+
+            try {
+                const q = query(
+                    collection(db, "orders"),
+                    where("userId", "==", session.user.email)
+                );
+
+                const querySnapshot = await getDocs(q);
+
+                const userOrders = [];
+                querySnapshot.forEach((doc) => {
+                    userOrders.push({ id: doc.id, ...doc.data() });
+                });
+
+                setOrders(userOrders);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            }
+        };
+
+        if (status === "authenticated") {
+            fetchOrders();
         }
-    };
-
-    fetchOrders();
-}, [session]);
+    }, [session, status]);
 
     //loading while next check cookies
     if(status === "loading") {
@@ -201,20 +228,7 @@ useEffect(() => {
     //if user not in session
     
 
-    const [mode, setMode] = useState("Login");
-    // LOGIN STATES
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    // SIGNUP STATES
-    const [name, setName] = useState("");
-    const [signupEmail, setSignupEmail] = useState("");
-    const [signupPassword, setSignupPassword] = useState("");
-    const [signupError, setSignupError] = useState("");
-    const [signupLoading, setSignupLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
+    
 
     const handleLogin = async (e) => {
         e.preventDefault();
