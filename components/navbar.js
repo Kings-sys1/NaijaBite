@@ -11,6 +11,8 @@ import Image from "next/image";
 import { BsCartX } from "react-icons/bs";
 import { useSession } from "next-auth/react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/config/firebase.config";
 
 export function Navbar() {
 
@@ -38,7 +40,7 @@ export function Navbar() {
 
     const { data: session } = useSession();
 
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
   if (!session) {
     setAlertMessage("Please sign in to checkout");
     setOpen(true);
@@ -46,13 +48,26 @@ export function Navbar() {
     return redirect("/auth/account");
   }
 
-  setAlertMessage("Checkout successful 🎉");
-  setOpen(true);
-  clearCart();
-  closeCart();
+  try {
+    await addDoc(collection(db, "orders"), {
+      userId: session.user.email,
+      items: cartItems,
+      total: totalPrice,
+      createdAt: serverTimestamp(),
+    });
+
+    setAlertMessage("Checkout successful");
+    setOpen(true);
+    clearCart();
+    closeCart();
+
+  } catch (error) {
+    setAlertMessage("Something went wrong");
+    setOpen(true);
+  }
 };
 
-    /* ---------- ACTIVE LINK DETECTOR (IMPORTANT) ---------- */
+    /* ACTIVE LINK */
     const isActive = (path) => pathname.startsWith(path);
 
     const linkStyle = (path) =>
@@ -81,7 +96,7 @@ export function Navbar() {
                     <Link href="/dashboard/contact"><li className={`cursor-pointer ${linkStyle("/dashboard/contact")}`}>Contact</li></Link>
                 </ul>
 
-                {/* RIGHT SIDE */}
+                {/* CART TOGGLE */}
                 <div className="flex items-center gap-5">
 
                     {/* CART ICON */}
@@ -95,7 +110,7 @@ export function Navbar() {
                             )}
                     </div>
 
-                    {/* HAMBURGER */}
+                    {/* HAMBURGER MOBILE MENU*/}
                     <RxHamburgerMenu
                         onClick={toggleMenu}
                         className="text-3xl cursor-pointer md:hidden"

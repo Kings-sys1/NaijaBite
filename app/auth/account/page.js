@@ -1,12 +1,16 @@
 "use client"
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { CgProfile } from "react-icons/cg";
 import Image from "next/image";
 import { BsBox2 } from "react-icons/bs";
 import { MdOutlineForwardToInbox } from "react-icons/md";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/config/firebase.config";
+import { auth } from "@/auth";
+import { CircularProgress } from "@mui/material";
 
 export default function Account() {
     const { data: session, status } = useSession();
@@ -16,14 +20,41 @@ export default function Account() {
     const checkOrder = ()=> setOrder(true);
     const [inbox, setInbox] = useState(false);
     const checkInbox = ()=> setInbox(true);
+    const [orders, setOrders] = useState([]);
     
 
-    //show loading while next check cookies
+useEffect(() => {
+    const fetchOrders = async () => {
+        if (!session?.user?.email) return;
+
+        try {
+            const q = query(
+                collection(db, "orders"),
+                where("userId", "==", session.user.email)
+            );
+
+            const querySnapshot = await getDocs(q);
+
+            const userOrders = [];
+            querySnapshot.forEach((doc) => {
+                userOrders.push({ id: doc.id, ...doc.data() });
+            });
+
+            setOrders(userOrders);
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+        }
+    };
+
+    fetchOrders();
+}, [session]);
+
+    //loading while next check cookies
     if(status === "loading") {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <p className="text-lg font-semibold text-gray-500">Loading...</p>
-            </div>
+            <main className="h-[80vh] flex items-center justify-center">
+                    <CircularProgress className="text-5xl" />
+                </main>
         );
     }
 
@@ -36,11 +67,19 @@ export default function Account() {
             <div className="border border-orange-200 w-full mx-3 md:mx-5 lg:w-1/2 py-10 px-8 rounded-2xl shadow-lg bg-white relative z-10">
 
                 <div className="text-center">
-                    <img
-                        src={session?.user?.image || "/default-avatar.png"}
-                        alt="profile"
-                        className="w-16 h-16 rounded-full mx-auto mb-4 border object-cover"
-                    />
+                    {session.user?.image ? (
+                        <Image
+                            src={session.user.image}
+                            alt="profile"
+                            width={64}
+                            height={64}
+                            className="w-15 h-15 rounded-full mx-auto mb-4 border object-cover"
+                        />
+                    ) : (
+                        <div className="w-15 h-15 rounded-full mx-auto mb-4 border bg-gray-200 flex items-center justify-center text-3xl text-blue-400">
+                            <CgProfile />
+                        </div>
+                    )}
 
                     <h2 className="text-2xl font-bold text-gray-800">
                         Welcome {session?.user?.name}!
@@ -62,7 +101,10 @@ export default function Account() {
                 <div onClick={checkOrder} className="flex justify-between items-center border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition px-2">
                     <div className="flex gap-2 items-center my-5">
                         <span><BsBox2 /></span>
-                        <p>Orders</p>
+                        <div className="flex gap-2">
+                            <p>Orders:</p>
+                            <span className="font-bold text-orange-500">{orders.length}</span>
+                        </div>
                     </div>
                     <span>&gt;</span>
                 </div>
@@ -187,7 +229,7 @@ export default function Account() {
             });
 
             if (res?.error) {
-                // Handle specific error messages
+                // error messages
                 setError(res.error);
             } else if (res?.ok) {
                 window.location.href = "/";
